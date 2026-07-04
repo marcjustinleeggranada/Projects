@@ -9,10 +9,6 @@
 
 ---
 
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_1c864649)
-
----
-
 ## Introducing Today's Project!
 
 ### Project overview
@@ -43,8 +39,6 @@ Tags are key-value pairs that assign custom metadata to your AWS resources. They
 
 The tags I’ve used on my EC2 instances are called Name and Env. The values I’ve assigned for my instances are nextwork-dev-Granada and development for the development environment, and nextwork-prod-Granada and production for the production environment.
 
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_2e0e5a5d)
-
 ---
 
 ## IAM Policies
@@ -71,12 +65,6 @@ In a JSON policy, the Effect attribute specifies whether the permission is allow
 
 ---
 
-## My JSON Policy
-
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_1c864649)
-
----
-
 ## Account Alias
 
 ### What I did in this step
@@ -90,8 +78,6 @@ An account alias is a unique, friendly name that you can create to replace your 
 ### Setting up my account alias
 
 Creating an account alias took me about 2 minutes. Now, my new AWS console sign-in URL is https://nextwork-alias-granada.signin.aws.amazon.com/console/, which is much easier to remember and share than using my 12-digit AWS account ID.
-
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_0eb4439b)
 
 ---
 
@@ -125,8 +111,6 @@ The first way is to open a private or incognito browser window and sign in using
 
 Once I logged in as my IAM user, I noticed that several panels on the AWS Management Console dashboard displayed Access denied errors. This was because my new user account only has permissions defined by our custom IAM policy, which strictly limits my permissions to managing development EC2 instances and does not grant any access to other AWS services or global account settings.
 
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_6f2ab446)
-
 ---
 
 ## Testing IAM Policies
@@ -143,13 +127,9 @@ I tested my JSON IAM policy by logging in with the intern's IAM user credentials
 
 When I tried to stop the production instance, the console displayed an unauthorized error banner. This was because the custom IAM policy attached to my IAM user group restricts Amazon EC2 management actions to resources tagged with a development environment value, ensuring the production EC2 instance remains secure and protected from unauthorized changes.
 
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_0e7a9d6a)
-
 ### Stopping the development instance
 
 When I tried to stop the development instance, the action was successful and the state immediately changed to stopping. This was because our custom IAM policy explicitly grants Amazon EC2 management permissions for resources tagged with an Env value of development, proving that the restricted access we configured is working exactly as intended.
-
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_1811801c)
 
 ---
 
@@ -164,8 +144,6 @@ The IAM Policy Simulator is a testing tool provided by AWS that allows you to ev
 ### How I used the simulator
 
 I set up a simulation for our DevOps intern's IAM user to test their permissions to stop Amazon EC2 instances. The results were that the action was allowed for resources with the development tag, but denied for production resources. I had to adjust the simulator's context attributes to include our specific Env resource tag to ensure the IAM Policy Simulator could accurately evaluate our resource-based security restrictions.
-
-![Image](http://nextwork.ai/mischievous_gray_loyal_tuke/uploads/aws-security-iam_069d8a621)
 
 ---
 
