@@ -27,7 +27,7 @@ In this step, I'm syncing my local repository with the remote repository and cre
 
 ### Issue number and planned feature
 
-My Issue number is #2 and it plans to add a responsive contact form feature to the website, which will allow visitors to send direct messages and help us track user inquiries via our GitHub repository.
+My Issue number is #2 and it plans to add a Resources section to learning-log.md, including helpful Git learning links to documentation and tutorials for future reference.
 
 ## Building a Feature Branch and Opening a Pull Request
 
@@ -58,15 +58,15 @@ I merged using the default merge commit strategy on GitHub, and Issue #2 closed 
 ### Key commands used in this stage
 
 ```
-git checkout -b feature/2-add-resources-section
-git add .
-git commit -m "Add Resources section to learning log"
-git push -u origin feature/2-add-resources-section
+git checkout -b feature/2-add-resources
+git add learning-log.md
+git commit -m "Add resources section with helpful Git links"
+git push --set-upstream origin feature/2-add-resources
 # ...after PR is approved and merged on GitHub...
 git checkout main
 git pull origin main
-git branch -d feature/2-add-resources-section
-git push origin --delete feature/2-add-resources-section
+git branch -d feature/2-add-resources
+git push origin --delete feature/2-add-resources
 ```
 
 ## Squash Merging a Second Feature Branch
@@ -84,15 +84,14 @@ In this step, I'm creating a second GitHub Issue for my next feature so that I c
 ### Key commands used in this stage
 
 ```
-git checkout -b feature/3-second-feature
-git commit -m "First small commit"
-git commit -m "Second small commit"
-git commit -m "Third small commit"
-git push -u origin feature/3-second-feature
+git checkout -b feature/3-add-next-steps
+git commit -m "Add Next Steps heading and first item"
+git commit -m "Add remaining next steps"
+git push origin feature/3-add-next-steps
 # ...merged via "Squash and merge" on GitHub, then locally...
 git checkout main
 git pull origin main
-git branch -d feature/3-second-feature
+git branch -D feature/3-add-next-steps
 ```
 
 ### Merge commit vs. squash merge: when I'd use each
