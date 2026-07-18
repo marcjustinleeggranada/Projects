@@ -32,11 +32,11 @@ That's it. No categories, no due dates, no sharing. The simplicity was intention
  
 The entire schema is one `todos` table, with Row Level Security enabled so a user can only read or write rows where `user_id` matches their own authenticated ID — enforced by Postgres itself, not just application logic.
  
-![Schema SQL in Supabase](screenshots/02-schema-sql.png)
+![Schema SQL in Supabase](02-schema-sql.png)
  
 ### Project structure
  
-![Project file structure](screenshots/01-file-structure.png)
+![Project file structure](01-file-structure.png)
  
 ## The Struggles (a.k.a. the Actual Learning)
  
@@ -48,7 +48,7 @@ The original design used Supabase's default magic-link login: click a link in yo
  
 The cause: Gmail (and several other providers) automatically "visits" links in incoming emails as a security scan, before the user ever clicks them. That visit consumes the one-time token, so by the time I actually clicked the link, it was already dead.
  
-![Magic link emails in Gmail, before the fix](screenshots/03-gmail-magic-link-issue.png)
+![Magic link emails in Gmail, before the fix](03-gmail-magic-link-issue.png)
  
 **Fix:** switched the entire login flow from a clickable magic link to a 6-digit (later 8-digit — more on that below) code the user types in manually. No link, nothing for an email scanner to prefetch, no silent token burn.
  
@@ -58,7 +58,7 @@ Even after fixing the token issue, Supabase's built-in email service turned out 
  
 I connected **Resend** as the SMTP provider. The tradeoff: without a verified custom domain, Resend's sandbox mode only delivers emails to the address used to create the Resend account itself — meaning right now, this app can only send login codes to my own email. Good enough for a personal project; a real domain would be the next step for anything used by other people.
  
-![Resend SMTP configured in Supabase](screenshots/05-resend-smtp-setup.png)
+![Resend SMTP configured in Supabase](05-resend-smtp-setup.png)
  
 ### 3. Right idea, wrong template
  
@@ -66,13 +66,13 @@ Even with SMTP working, the email was *still* sending a clickable link instead o
  
 The fix, once identified, was straightforward: swap `{{ .ConfirmationURL }}` for `{{ .Token }}` in the template that was actually firing.
  
-![Editing the email template to send a token instead of a link](screenshots/06-otp-token-template.png)
+![Editing the email template to send a token instead of a link](06-otp-token-template.png)
  
 ### 4. Environment variables silently mismatched on Vercel
  
 The deployed site threw `Your project's URL and API key are required to create a Supabase client!` — despite everything working fine locally. The cause, once traced: Supabase's dashboard now labels what used to be called the "anon key" as the **"publishable key."** I'd copied it under that newer name into Vercel, but the app's code was still reading `process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY` — a name that no longer existed in the environment. Same key, different label, silently broken.
  
-![Mismatched environment variable name in Vercel](screenshots/04-vercel-env-var-mixup.png)
+![Mismatched environment variable name in Vercel](04-vercel-env-var-mixup.png)
  
 **Fix:** deleted the mismatched variable and re-added it under the exact name the code expected, then redeployed.
  
@@ -88,15 +88,15 @@ A working sign-in flow with no passwords, a functioning todo list scoped per-use
  
 | Sign in | Enter code | Working app |
 |---|---|---|
-| ![Sign in screen](screenshots/07-signin-email-step.png) | ![Code entry screen](screenshots/08-signin-code-step.png) | ![Working todo app](screenshots/09-working-todos-app.png) |
+| ![Sign in screen](07-signin-email-step.png) | ![Code entry screen](08-signin-code-step.png) | ![Working todo app](09-working-todos-app.png) |
  
 Deployed and live on Vercel:
  
-![Vercel deployment success](screenshots/10-vercel-deployment-success.png)
+![Vercel deployment success](10-vercel-deployment-success.png)
  
 The commit history tells the same story as this document, just in fewer words:
  
-![Git commit history](screenshots/11-git-commit-history.png)
+![Git commit history](11-git-commit-history.png)
  
 ## Reflection
  
